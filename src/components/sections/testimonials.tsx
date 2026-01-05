@@ -130,15 +130,22 @@ export function Testimonials() {
                   &ldquo;{testimonial.content}&rdquo;
                 </p>
 
-                {/* Author */}
+                {/* Author with animated avatar */}
                 <div className="flex items-center gap-3">
-                  <Image
-                    src={testimonial.avatar}
-                    alt={testimonial.author}
-                    width={48}
-                    height={48}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                    className="relative"
+                  >
+                    <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
+                    <Image
+                      src={testimonial.avatar}
+                      alt={testimonial.author}
+                      width={48}
+                      height={48}
+                      className="relative w-12 h-12 rounded-full object-cover border-2 border-transparent group-hover:border-white/50 transition-all duration-300"
+                    />
+                  </motion.div>
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white transition-colors duration-300 group-hover:text-violet-600 dark:group-hover:text-violet-400">{testimonial.author}</p>
                     <p className="text-sm text-gray-500 dark:text-white/60">{testimonial.role}</p>

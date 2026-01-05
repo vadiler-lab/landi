@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import * as React from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
@@ -61,21 +61,36 @@ export function ProductShowcase() {
           className="relative max-w-6xl mx-auto will-change-transform"
         >
           <div className="relative group">
-            <div className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-2xl shadow-violet-500/10 transition-shadow duration-300 hover:shadow-violet-500/20">
+            {/* Glow effect behind the card on hover */}
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-violet-600/20 via-fuchsia-500/20 to-indigo-600/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            
+            <div className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-2xl shadow-violet-500/10 transition-all duration-500 group-hover:shadow-violet-500/30">
               {/* Browser chrome */}
               <div className="bg-gray-100 dark:bg-white/5 backdrop-blur-sm border-b border-gray-200 dark:border-white/10 px-4 py-3 flex items-center gap-2">
                 <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  <motion.div 
+                    className="w-3 h-3 rounded-full bg-red-500/80 cursor-pointer"
+                    whileHover={{ scale: 1.2, backgroundColor: "#ef4444" }}
+                  />
+                  <motion.div 
+                    className="w-3 h-3 rounded-full bg-yellow-500/80 cursor-pointer"
+                    whileHover={{ scale: 1.2, backgroundColor: "#eab308" }}
+                  />
+                  <motion.div 
+                    className="w-3 h-3 rounded-full bg-green-500/80 cursor-pointer"
+                    whileHover={{ scale: 1.2, backgroundColor: "#22c55e" }}
+                  />
                 </div>
                 <div className="flex-1 mx-4">
-                  <div className="bg-white dark:bg-white/10 rounded-lg px-4 py-1.5 text-sm text-gray-500 dark:text-white/40 max-w-md mx-auto border border-gray-200 dark:border-transparent flex items-center justify-center gap-2">
+                  <motion.div 
+                    className="bg-white dark:bg-white/10 rounded-lg px-4 py-1.5 text-sm text-gray-500 dark:text-white/40 max-w-md mx-auto border border-gray-200 dark:border-transparent flex items-center justify-center gap-2"
+                    whileHover={{ borderColor: "rgba(139, 92, 246, 0.3)" }}
+                  >
                     <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                     </svg>
                     app.nexus.dev
-                  </div>
+                  </motion.div>
                 </div>
               </div>
               
