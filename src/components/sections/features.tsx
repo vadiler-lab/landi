@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import * as React from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import {
   Zap,
   Shield,
@@ -59,37 +59,15 @@ const features = [
 ];
 
 export function Features() {
-  const sectionRef = React.useRef<HTMLElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-
-  // Parallax transforms
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const orb1X = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const orb1Y = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const orb2X = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const orb2Y = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const headerY = useTransform(scrollYProgress, [0, 0.3], [50, 0]);
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
-
   return (
-    <section ref={sectionRef} id="features" className="relative py-32 bg-gray-50 dark:bg-black overflow-hidden transition-colors duration-300">
-      {/* Enhanced background with animated elements */}
-      <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
+    <section id="features" className="relative py-32 bg-gray-50 dark:bg-black overflow-hidden transition-colors duration-300">
+      {/* Static background */}
+      <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-gray-50 dark:from-black via-violet-50/30 dark:via-violet-950/10 to-gray-50 dark:to-black" />
         
-        {/* Animated gradient orbs with parallax */}
-        <motion.div
-          className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-violet-300/20 to-indigo-300/10 dark:from-violet-600/20 dark:to-indigo-600/10 rounded-full blur-3xl"
-          style={{ x: orb1X, y: orb1Y }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-fuchsia-300/15 to-pink-300/10 dark:from-fuchsia-600/15 dark:to-pink-600/10 rounded-full blur-3xl"
-          style={{ x: orb2X, y: orb2Y }}
-        />
+        {/* Static gradient orbs - reduced blur */}
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-violet-300/15 to-indigo-300/10 dark:from-violet-600/15 dark:to-indigo-600/10 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-gradient-to-tr from-fuchsia-300/10 to-pink-300/10 dark:from-fuchsia-600/10 dark:to-pink-600/10 rounded-full blur-2xl" />
         
         {/* Subtle grid overlay */}
         <div 
@@ -99,16 +77,15 @@ export function Features() {
             backgroundSize: "40px 40px",
           }}
         />
-      </motion.div>
+      </div>
 
       <Container className="relative z-10">
-        {/* Section header with parallax */}
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          style={{ y: headerY, opacity: headerOpacity }}
           className="text-center max-w-3xl mx-auto mb-20"
         >
           <Badge variant="primary" className="mb-4">Features</Badge>
@@ -137,49 +114,29 @@ export function Features() {
                 delay: index * 0.1,
                 ease: [0.25, 0.4, 0.25, 1],
               }}
-              whileHover={{ y: -8 }}
               className="group"
             >
-              <div className="relative h-full">
-                {/* Glow effect on hover */}
-                <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
-                <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-indigo-600 opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
+              <div className="relative h-full rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black p-6 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-600/50 hover:shadow-lg hover:-translate-y-1">
+                {/* Icon container */}
+                <div
+                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} p-2.5 mb-5`}
+                >
+                  <feature.icon className="w-full h-full text-white" />
+                </div>
                 
-                <div className="relative h-full rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-black p-6 backdrop-blur-sm transition-all duration-500 group-hover:border-transparent group-hover:shadow-2xl group-hover:shadow-violet-500/10">
-                  {/* Animated icon container */}
-                  <motion.div
-                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} p-2.5 mb-5 relative overflow-hidden`}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  >
-                    <feature.icon className="w-full h-full text-white relative z-10" />
-                    {/* Shimmer effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.6 }}
-                    />
-                  </motion.div>
-                  
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-300 group-hover:text-violet-600 dark:group-hover:text-violet-400">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-white/60 leading-relaxed">
-                    {feature.description}
-                  </p>
-                  
-                  {/* Subtle arrow indicator */}
-                  <motion.div
-                    className="mt-4 flex items-center text-violet-600 dark:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    initial={{ x: -10 }}
-                    whileHover={{ x: 0 }}
-                  >
-                    <span className="text-sm font-medium">Learn more</span>
-                    <svg className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </motion.div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-300 group-hover:text-violet-600 dark:group-hover:text-violet-400">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 dark:text-white/60 leading-relaxed">
+                  {feature.description}
+                </p>
+                
+                {/* Arrow indicator */}
+                <div className="mt-4 flex items-center text-violet-600 dark:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-sm font-medium">Learn more</span>
+                  <svg className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </div>
               </div>
             </motion.div>

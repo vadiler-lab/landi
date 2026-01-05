@@ -16,92 +16,34 @@ export function Hero() {
     offset: ["start start", "end start"]
   });
 
-  // Parallax transforms
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  // Simplified parallax - only essential transforms
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
-  const floatingCard1Y = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const floatingCard2Y = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const blobScale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
-  const blobOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
 
   return (
     <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-black pt-16 transition-colors duration-300">
-      {/* Aurora gradient background */}
-      <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
+      {/* Static gradient background - NO animations */}
+      <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-violet-100/50 dark:from-violet-950/50 via-gray-50 dark:via-black to-gray-50 dark:to-black" />
         
-        {/* Animated morphing blobs with parallax */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-violet-400/30 to-fuchsia-400/20 dark:from-violet-600/40 dark:to-fuchsia-600/30 rounded-full blur-3xl"
-          style={{ scale: blobScale, opacity: blobOpacity }}
-          animate={{
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-            borderRadius: ["60% 40% 30% 70%", "30% 60% 70% 40%", "60% 40% 30% 70%"],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-indigo-400/20 to-cyan-400/15 dark:from-indigo-600/30 dark:to-cyan-600/20 rounded-full blur-3xl"
-          style={{ scale: blobScale, opacity: blobOpacity }}
-          animate={{
-            x: [0, -50, 0],
-            y: [0, -30, 0],
-            borderRadius: ["30% 60% 70% 40%", "60% 40% 30% 70%", "30% 60% 70% 40%"],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-br from-pink-400/15 to-rose-400/10 dark:from-pink-600/20 dark:to-rose-600/15 rounded-full blur-3xl"
-          style={{ scale: blobScale }}
-          animate={{
-            rotate: [0, 180, 360],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
-      </motion.div>
+        {/* Static blobs - reduced blur for better performance */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-violet-400/20 to-fuchsia-400/15 dark:from-violet-600/30 dark:to-fuchsia-600/20 rounded-full blur-2xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-gradient-to-br from-indigo-400/15 to-cyan-400/10 dark:from-indigo-600/20 dark:to-cyan-600/15 rounded-full blur-2xl" />
+      </div>
       
-      {/* Animated grid pattern overlay */}
+      {/* Static grid pattern overlay */}
       <div 
-        className="absolute inset-0 opacity-30 dark:opacity-20"
+        className="absolute inset-0 opacity-20 dark:opacity-10"
         style={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
                            linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
           backgroundSize: "64px 64px",
         }}
       />
-      
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-violet-500/30 dark:bg-violet-400/30 rounded-full"
-            style={{
-              left: `${15 + i * 15}%`,
-              top: `${20 + (i % 3) * 25}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.3, 0.8, 0.3],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 3 + i * 0.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.5,
-            }}
-          />
-        ))}
-      </div>
 
       <Container className="relative z-10">
         <motion.div 
-          className="flex flex-col items-center text-center max-w-5xl mx-auto"
+          className="flex flex-col items-center text-center max-w-5xl mx-auto will-change-transform"
           style={{ y: contentY, opacity: contentOpacity }}
         >
           {/* Badge */}
@@ -116,7 +58,7 @@ export function Hero() {
             </Badge>
           </motion.div>
 
-          {/* Main headline */}
+          {/* Main headline - static gradient, no animation */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -124,13 +66,9 @@ export function Hero() {
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 dark:text-white leading-[1.1]"
           >
             Build the future
-            <motion.span 
-              className="block bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-600 dark:from-violet-400 dark:via-fuchsia-400 dark:to-indigo-400 bg-clip-text text-transparent bg-[length:200%_auto]"
-              animate={{ backgroundPosition: ["0% center", "200% center"] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            >
+            <span className="block bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-600 dark:from-violet-400 dark:via-fuchsia-400 dark:to-indigo-400 bg-clip-text text-transparent">
               of the web
-            </motion.span>
+            </span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -161,13 +99,12 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          {/* Hero image */}
+          {/* Hero image - simplified */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mt-20 relative w-full"
-            style={{ y: imageY, scale: imageScale }}
           >
             <div className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-2xl shadow-violet-500/10">
               <Image
@@ -182,13 +119,8 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-gray-50/50 dark:from-black/50 via-transparent to-transparent" />
             </div>
             
-            {/* Floating elements with parallax */}
-            <motion.div
-              className="absolute -top-6 -right-6 p-4 bg-white dark:bg-white/10 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-white/20 shadow-lg hidden lg:block"
-              style={{ y: floatingCard1Y }}
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
+            {/* Static floating elements - hidden on mobile, no animations */}
+            <div className="absolute -top-6 -right-6 p-4 bg-white dark:bg-white/10 backdrop-blur-md rounded-2xl border border-gray-200 dark:border-white/20 shadow-lg hidden xl:block">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -200,14 +132,9 @@ export function Hero() {
                   <p className="text-xs text-gray-500 dark:text-white/60">Just now</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              className="absolute -bottom-6 -left-6 p-4 bg-white dark:bg-white/10 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-white/20 shadow-lg hidden lg:block"
-              style={{ y: floatingCard2Y }}
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-            >
+            <div className="absolute -bottom-6 -left-6 p-4 bg-white dark:bg-white/10 backdrop-blur-md rounded-2xl border border-gray-200 dark:border-white/20 shadow-lg hidden xl:block">
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 border-2 border-white dark:border-black" />
@@ -219,7 +146,7 @@ export function Hero() {
                   <p className="text-xs text-gray-500 dark:text-white/60">This week</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </motion.div>
       </Container>

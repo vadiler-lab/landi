@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import * as React from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import { Container } from "@/components/ui/container";
 
 const logos = [
@@ -14,20 +14,8 @@ const logos = [
 ];
 
 export function LogoCloud() {
-  const sectionRef = React.useRef<HTMLElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-
-  // Parallax transforms
-  const marqueeSpeed = useTransform(scrollYProgress, [0, 1], [0, -400]);
-  const statsY = useTransform(scrollYProgress, [0, 1], [50, -30]);
-  const statsOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
-
   return (
-    <section ref={sectionRef} className="relative py-20 bg-white dark:bg-black overflow-hidden transition-colors duration-300">
+    <section className="relative py-20 bg-white dark:bg-black overflow-hidden transition-colors duration-300">
       {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-50/10 dark:via-violet-950/5 to-transparent" />
       
@@ -49,21 +37,10 @@ export function LogoCloud() {
           <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white dark:from-black to-transparent z-10" />
           <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-black to-transparent z-10" />
 
-          {/* Scrolling logos */}
+          {/* Simple CSS animation marquee - more performant */}
           <div className="flex overflow-hidden">
-            <motion.div
-              className="flex gap-16 items-center"
-              animate={{ x: [0, -1200] }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 30,
-                  ease: "linear",
-                },
-              }}
-            >
-              {[...logos, ...logos, ...logos].map((logo, i) => (
+            <div className="flex gap-16 items-center animate-marquee">
+              {[...logos, ...logos].map((logo, i) => (
                 <div
                   key={i}
                   className="flex-shrink-0 h-12 flex items-center justify-center text-gray-400 dark:text-white/40 hover:text-gray-600 dark:hover:text-white/60 transition-colors"
@@ -73,17 +50,16 @@ export function LogoCloud() {
                   </span>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
 
-        {/* Stats with parallax */}
+        {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          style={{ y: statsY, opacity: statsOpacity }}
           className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8"
         >
           {[
